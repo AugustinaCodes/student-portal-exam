@@ -4,9 +4,8 @@ const cookieParser = require("cookie-parser");
 
 const errorHandler = require("./middleware/errorHandler");
 const catchAsync = require("./utils/catchAsync");
-// const sessionRoutes = require("./routes/sessionRoutes");
 const authRoutes = require("./routes/authRoutes");
-// const bookingRoutes = require("./routes/bookingRoutes");
+const studentRoutes = require("./routes/studentRoutes");
 // const analyticsRoutes = require("./routes/analyticsRoutes");
 const { testDatabaseConnection } = require("./config/db");
 
@@ -24,6 +23,7 @@ app.use(cookieParser());
 
 // app.use("/api/sessions", sessionRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/students", studentRoutes);
 // app.use("/api/bookings", bookingRoutes);
 // app.use("/api/analytics", analyticsRoutes);
 

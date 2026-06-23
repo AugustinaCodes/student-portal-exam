@@ -14,7 +14,7 @@ const clearAuthCookie = (res) => {
     });
 };
 
-const register = catchAsync(async (req, res, next) => {
+const registerNewUser = catchAsync(async (req, res, next) => {
     const { email, password } = req.validated.body;
 
     const existingUser = await findUserByEmail(email);
@@ -41,7 +41,7 @@ const register = catchAsync(async (req, res, next) => {
     createSendToken(newUser, 201, res);
 });
 
-const login = catchAsync(async (req, res, next) => {
+const loginUser = catchAsync(async (req, res, next) => {
     const { email, password } = req.validated.body;
 
     const user = await findUserByEmail(email);
@@ -65,7 +65,7 @@ const login = catchAsync(async (req, res, next) => {
     createSendToken(safeUser, 200, res);
 });
 
-const logout = (req, res) => {
+const logoutUser = (req, res) => {
     clearAuthCookie(res);
 
     res.status(200).json({
@@ -75,7 +75,7 @@ const logout = (req, res) => {
 };
 
 module.exports = {
-    register,
-    login,
-    logout,
+    registerNewUser,
+    loginUser,
+    logoutUser,
 };
