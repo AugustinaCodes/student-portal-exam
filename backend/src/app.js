@@ -2,16 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-// const errorHandler = require("./middleware/errorHandler");
-// const catchAsync = require("./utils/catchAsync");
+const errorHandler = require("./middleware/errorHandler");
+const catchAsync = require("./utils/catchAsync");
 // const sessionRoutes = require("./routes/sessionRoutes");
-// const authRoutes = require("./routes/authRoutes");
+const authRoutes = require("./routes/authRoutes");
 // const bookingRoutes = require("./routes/bookingRoutes");
 // const analyticsRoutes = require("./routes/analyticsRoutes");
-// const { testDatabaseConnection } = require("./config/db");
-
-// const swaggerUi = require("swagger-ui-express");
-// const swaggerSpec = require("./config/swagger");
+const { testDatabaseConnection } = require("./config/db");
 
 const app = express();
 
@@ -25,10 +22,8 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-// app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
 // app.use("/api/sessions", sessionRoutes);
-// app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 // app.use("/api/bookings", bookingRoutes);
 // app.use("/api/analytics", analyticsRoutes);
 
@@ -45,6 +40,6 @@ app.get(
   })
 );
 
-// app.use(errorHandler);
+app.use(errorHandler);
 
 module.exports = app;

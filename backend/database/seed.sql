@@ -1,6 +1,6 @@
 -- Student Registration Portal seed data
 
--- 1. Insert Portal Users (Password for all: admin)
+-- 1. Insert Portal Users (Password for all: my password)
 INSERT INTO users (email, password)
 VALUES
   (
