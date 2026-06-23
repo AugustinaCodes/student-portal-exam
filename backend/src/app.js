@@ -6,7 +6,7 @@ const errorHandler = require("./middleware/errorHandler");
 const catchAsync = require("./utils/catchAsync");
 const authRoutes = require("./routes/authRoutes");
 const studentRoutes = require("./routes/studentRoutes");
-// const analyticsRoutes = require("./routes/analyticsRoutes");
+const moduleRoutes = require("./routes/modulesRoutes");
 const { testDatabaseConnection } = require("./config/db");
 
 const app = express();
@@ -24,7 +24,7 @@ app.use(cookieParser());
 // app.use("/api/sessions", sessionRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/students", studentRoutes);
-// app.use("/api/bookings", bookingRoutes);
+app.use("/api/modules", moduleRoutes);
 // app.use("/api/analytics", analyticsRoutes);
 
 app.get(
