@@ -13,7 +13,6 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       await login(formData);
-      // Redirect logic here (e.g., useNavigate from react-router)
     } catch (err) {
       // Handled by store error catch block
     }

@@ -14,19 +14,15 @@ function App() {
 
       <div className="flex flex-1 flex-col">
         <Routes>
-          {/* Public routes for guest users only */}
           <Route element={<AuthRoute />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
           </Route>
 
-          {/* Secure portal routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<DashboardPage />} />
-            {/* Future routes like /modules or /students go here */}
           </Route>
 
-          {/* Fallback Catch-All Route */}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </div>
