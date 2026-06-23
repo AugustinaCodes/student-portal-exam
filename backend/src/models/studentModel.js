@@ -43,17 +43,27 @@ const findStudents = async (filters = {}) => {
 
   const students = await sql`
     SELECT 
-      id, 
-      first_name, 
-      last_name, 
-      course_id, 
-      created_at 
-    FROM students
+      s.id, 
+      s.first_name, 
+      s.last_name, 
+      s.course_id, 
+      s.created_at,
+      COALESCE(
+        JSON_AGG(
+          JSON_BUILD_OBJECT('id', m.id, 'title', m.title, 'credits', m.credits)
+        ) FILTER (WHERE m.id IS NOT NULL), 
+        '[]'
+      ) AS modules
+    FROM students s
+    LEFT JOIN enrollments e ON s.id = e.student_id
+    LEFT JOIN modules m ON e.module_id = m.id
     WHERE 1=1
-      ${id ? sql`AND id = ${id}` : sql``}
-      ${course_id ? sql`AND course_id = ${course_id}` : sql``}
-      ${first_name ? sql`AND first_name ILIKE ${'%' + first_name + '%'}` : sql``}
-      ${last_name ? sql`AND last_name ILIKE ${'%' + last_name + '%'}` : sql``}
+      ${id ? sql`AND s.id = ${id}` : sql``}
+      ${course_id ? sql`AND s.course_id = ${course_id}` : sql``}
+      ${first_name ? sql`AND s.first_name ILIKE ${'%' + first_name + '%'}` : sql``}
+      ${last_name ? sql`AND s.last_name ILIKE ${'%' + last_name + '%'}` : sql``}
+    GROUP BY s.id
+    ORDER BY s.created_at DESC
   `;
 
   return students;
