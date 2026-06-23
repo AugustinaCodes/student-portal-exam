@@ -36,8 +36,37 @@ const filterStudentSchema = z.object({
   }),
 });
 
+const updateStudentSchema = z.object({
+  params: z.object({
+    id: idParamSchema,
+  }),
+  body: z.object({
+    first_name: z
+      .string()
+      .trim()
+      .min(1, "First name cannot be empty")
+      .max(50, "First name cannot exceed 50 characters")
+      .optional(),
+    last_name: z
+      .string()
+      .trim()
+      .min(1, "Last name cannot be empty")
+      .max(50, "Last name cannot exceed 50 characters")
+      .optional(),
+    course_id: z
+      .number()
+      .int()
+      .positive("Invalid Course ID")
+      .optional(),
+    module_ids: z
+      .array(z.number().int().positive())
+      .optional(), 
+  }),
+});
+
 module.exports = {
   createStudentSchema,
   studentIdParamSchema,
   filterStudentSchema,
+  updateStudentSchema
 };
