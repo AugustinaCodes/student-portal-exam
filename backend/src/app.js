@@ -21,11 +21,9 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-// app.use("/api/sessions", sessionRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/students", studentRoutes);
 app.use("/api/modules", moduleRoutes);
-// app.use("/api/analytics", analyticsRoutes);
 
 app.get(
   "/api/health",
