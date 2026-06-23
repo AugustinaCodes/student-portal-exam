@@ -10,14 +10,19 @@ const {
 } = require("../models/studentModel");
 
 const addNewStudent = catchAsync(async (req, res, next) => {
-  const { first_name, last_name, course_id } = req.validated.body;
+  const { first_name, last_name, course_id, module_ids } = req.validated.body;
 
   let newStudent;
   try {
-    newStudent = await createStudent({ first_name, last_name, course_id });
+    newStudent = await createStudent({ 
+      first_name, 
+      last_name, 
+      course_id, 
+      module_ids 
+    });
   } catch (error) {
     if (error.code === "23503") {
-      throw new AppError("The provided course ID does not exist", 400);
+      throw new AppError("The provided course ID or module ID does not exist", 400);
     }
     throw error;
   }

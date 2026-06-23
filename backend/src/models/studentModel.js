@@ -1,26 +1,41 @@
 const { sql } = require("../config/db");
 
-const createStudent = async ({ first_name, last_name, course_id }) => {
-  const students = await sql`
-    INSERT INTO students (
-      first_name,
-      last_name,
-      course_id
-    )
-    VALUES (
-      ${first_name},
-      ${last_name},
-      ${course_id}
-    )
-    RETURNING
-      id,
-      first_name,
-      last_name,
-      course_id,
-      created_at
-  `;
+const createStudent = async ({ first_name, last_name, course_id, module_ids = [] }) => {
+  return await sql.begin(async (sql) => {
+    const students = await sql`
+      INSERT INTO students (first_name, last_name, course_id)
+      VALUES (${first_name}, ${last_name}, ${course_id})
+      RETURNING id, first_name, last_name, course_id, created_at
+    `;
+    
+    const newStudent = students[0];
+    if (!newStudent) return null;
 
-  return students[0] || null;
+    if (module_ids && module_ids.length > 0) {
+      const rows = module_ids.map((modId) => ({
+        student_id: newStudent.id,
+        module_id: modId,
+      }));
+
+      await sql`
+        INSERT INTO enrollments ${sql(rows, 'student_id', 'module_id')}
+      `;
+    }
+
+    const currentModules = module_ids.length > 0 
+      ? await sql`
+          SELECT m.id, m.title, m.credits
+          FROM modules m
+          JOIN enrollments e ON m.id = e.module_id
+          WHERE e.student_id = ${newStudent.id}
+        `
+      : [];
+
+    return {
+      ...newStudent,
+      modules: currentModules
+    };
+  });
 };
 
 const findStudentById = async (id) => {

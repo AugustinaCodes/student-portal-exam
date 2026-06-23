@@ -18,6 +18,9 @@ const createStudentSchema = z.object({
       .number({ required_error: "Course ID is required" })
       .int()
       .positive("Invalid Course ID"),
+    module_ids: z
+      .array(z.number().int().positive())
+      .optional(), 
   }),
 });
 
